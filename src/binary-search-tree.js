@@ -60,9 +60,9 @@ class BinarySearchTree {
 
   find(data) {
     let currentNode = this.rootNode;
-                                        console.log('--- data --- :', data);
+                                        //console.log('--- data --- :', data);
     while (currentNode) {
-                                                  console.log('--- current --- :', currentNode);
+                                                  //console.log('--- current --- :', currentNode);
       if (currentNode.data === data) {return currentNode}
       if (currentNode.data > data) {
         currentNode = currentNode.left;
@@ -77,9 +77,10 @@ class BinarySearchTree {
     let currentNode = this.rootNode;
     let preCurrentNode = null;
     let lastSide = null
-                                                  console.log('currentNode -', currentNode);
+  
+                                                  //console.log('currentNode -', currentNode);
     while (currentNode) {
-                                                    console.log('--- current --- :', currentNode);
+                                                    //console.log('--- current --- :', currentNode);
       if (currentNode.data === data) {break}
       if (currentNode.data > data) {
         preCurrentNode = currentNode;
@@ -95,23 +96,52 @@ class BinarySearchTree {
     if (currentNode.left === null && currentNode.right === null) {
       preCurrentNode[lastSide] = null;
       currentNode = null;
+      return
     } else {
+
       if (currentNode.left === null || currentNode.right === null) {
         if (currentNode.right === null) {
           preCurrentNode.left = currentNode.left;
         } else {
           preCurrentNode.right = currentNode.right;
         }
+        return
+      }
+    }
+    let replasingNode = currentNode.right;
+    while (replasingNode) {
+      if (replasingNode.left === null) {
+        console.log('----first part-------');
+        preCurrentNode[lastSide] = replasingNode;
+        currentNode.left = null;
+        return;
+      } else {
+        console.log('-----second part-------');
+        currentNode = replasingNode;
+        replasingNode = replasingNode.left;
       }
     }
   }
 
   min() {
-  
+    let currentNode = this.rootNode;
+
+    while (currentNode) {
+      if (currentNode.left === null) {
+        return currentNode.data;
+      }
+      currentNode = currentNode.left;
+    }
   }
 
   max() {
-  
+    let currentNode = this.rootNode;
+    while (currentNode) {
+      if (currentNode.right === null) {
+        return currentNode.data;
+      }
+      currentNode = currentNode.right;
+    }
   }
 }
 
