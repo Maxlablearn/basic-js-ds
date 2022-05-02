@@ -20,6 +20,7 @@ class BinarySearchTree {
 
   add(data) {
     const newNode = new Node(data);
+    if (this.has(data)) {return}
     if (!this.rootNode) {
       this.rootNode = newNode;
       return;
