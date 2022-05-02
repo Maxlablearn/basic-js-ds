@@ -78,11 +78,12 @@ class BinarySearchTree {
     let currentNode = this.rootNode;
     let preCurrentNode = null;
     let lastSide = null
-    
+            
     if (!this.has(data)) return;
-                                                    //console.log('currentNode -', currentNode);
+
+               //search node and preNode
     while (currentNode) {
-                                                    //console.log('--- current --- :', currentNode);
+
       if (currentNode.data === data) {break}
       if (currentNode.data > data) {
         preCurrentNode = currentNode;
@@ -95,6 +96,7 @@ class BinarySearchTree {
       }
     }
     
+                // remove for node with no children
     if (currentNode.left === null && currentNode.right === null) {
       if (currentNode !== this.rootNode) {
         preCurrentNode[lastSide] = null;
@@ -103,6 +105,7 @@ class BinarySearchTree {
       return
     } else {
 
+                // remove for node with 1 children
       if (currentNode.left === null || currentNode.right === null) {
         if (currentNode.right === null) {
           if (currentNode !== this.rootNode) {
@@ -117,56 +120,50 @@ class BinarySearchTree {
           } else {
             this.rootNode = currentNode.right;
           }
-          
         }
         return
       }
     }
 
-    let replasingNode = currentNode.right;
-    let preReplasingNode = currentNode;
+                  // remove node with 2 children
+    let replacingNode = currentNode.right;
+    let repLastSide = 'right';
+    let preReplacingNode = currentNode;
 
-    while (replasingNode) {
+    while (replacingNode) {
 
-      if (replasingNode.left === null) {
-        
-        console.log('----first part-------');
-        console.log('currentNode -', currentNode);  
-
+      if (replacingNode.left === null) {
         
         if (currentNode === this.rootNode) {
 
-          console.log('currentNode -', currentNode);                                            
-          console.log('---change rootNode--- preRep -', preReplasingNode,'  rep - ',replasingNode,'  last side - ',lastSide);
-
-          this.rootNode = replasingNode;
-          preReplasingNode.left = replasingNode.right;
+          this.rootNode = replacingNode;
+          preReplacingNode.left = replacingNode.right;
           this.rootNode.left = currentNode.left;
           this.rootNode.right = currentNode.right;
                                                                         
         } else {
 
-          console.log('currentNode -', currentNode);  
-          console.log('last side - ', lastSide, '   preCurrentNode -', preCurrentNode, '   replasingNode -', replasingNode);
+          if (currentNode !== preReplacingNode) {
+            preReplacingNode.left = replacingNode.right;
+          }
 
-          replasingNode.left = currentNode.left;
-          preCurrentNode[lastSide] = replasingNode;
-          preReplasingNode.left = replasingNode.right;
-          
+          replacingNode.left = null;
+          if (currentNode !== preReplacingNode) {
+            replacingNode.right = preReplacingNode;
+          } 
+          preCurrentNode[lastSide] = replacingNode;
+          replacingNode.left = currentNode.left;
 
-          //preReplasingNode.left = null; 
           
         }
 
-
-
         return;
         
-        
       } else {
-                                                                          console.log('-----second part------  preRep -', preReplasingNode,'  rep - ',replasingNode);
-        preReplasingNode = replasingNode;
-        replasingNode = replasingNode.left;
+        
+        preReplacingNode = replacingNode;
+        replacingNode = replacingNode.left;
+        repLastSide = 'left'
       }
     }
   }
@@ -192,6 +189,7 @@ class BinarySearchTree {
     }
   }
 }
+// [50,25,75,12,35,64,100,4,20,29,45,54,69,90,120,16,31,55,80]
 
 module.exports = {
   BinarySearchTree
